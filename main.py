@@ -162,25 +162,9 @@ def create_random_slideshow(list_of_slides):
             partner_slides.append((partner_slide, partner_slide_score))
 
         if partner_slides:
-            coin = [1, 2]
-            coin_flip = random.choice(coin)
-            best_slide = []
-            if coin_flip == 1:
-                best_slide = max(partner_slides, key=lambda item: item[1])
-            else:
-                best_4_partnerts = []
-                coin = [2, 3, 4, 5]
-                coin_flip = random.choice(coin)
-                for i in range(coin_flip):
-                    partner_slides_copy = partner_slides[:] #copy
-                    if partner_slides_copy:
-                        best_partner = max(partner_slides_copy, key=lambda item: item[1])
-                        best_4_partnerts.append(best_partner)
-                        partner_slides_copy.remove(best_partner)
-                best_slide = max(best_4_partnerts, key=lambda item: item[1])
-
-
-            for slide in list_of_slides:
+            best_slide = max(partner_slides, key=lambda item: item[1])
+            list_of_slides_copy = [elem for elem in list_of_slides]
+            for slide in list_of_slides_copy:
                 if slide == best_slide[0]:
                     slide_show_score += best_slide[1]
                     list_of_slides.remove(slide)
@@ -193,7 +177,8 @@ def create_random_slideshow(list_of_slides):
 def get_best_slideshow(list_of_slides):
     num_of_slides = len(list_of_slides)
     result = []
-    for i in range(10000):
+    for i in range(num_of_slides):
+        print(i)
         list_copy = [elem for elem in list_of_slides]
         result.append(create_random_slideshow(list_copy))
     best_slide_shows = max(result, key=lambda item: item[1])
@@ -203,8 +188,8 @@ def get_best_slideshow(list_of_slides):
 
 if __name__ == '__main__':
     # dataset = parse_txt('a_example.txt', line_manipulation)
-    dataset = parse_txt('a_example.txt', line_manipulation)
+    dataset = parse_txt('c_memorable_moments.txt', line_manipulation)
     slides = create_slides_dataset(dataset)
     results = get_best_slideshow(slides)
-    print_submission_file(results, 'A.txt')
+    print_submission_file(results, 'C.txt')
     x = 0
