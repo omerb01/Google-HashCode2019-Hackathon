@@ -1,3 +1,6 @@
+import random
+
+
 def parse_txt(path, func):
     pictures = []
     lines = [line.rstrip('\n') for line in open(path)]
@@ -66,9 +69,46 @@ def sort_photos_by_common_num(vertical_photos):
     return result
 
 
+def create_random_combined_photos(vertical_photos):
+    result = []
+    while vertical_photos:
+        random_photo = random.choice(vertical_photos)
+        vertical_photos.remove(random_photo)
+        photos = []
+        for id, orientation, num_of_tags, tags in vertical_photos:
+            num_common_tags = get_num_intersect_tags(random_photo, (id, orientation, num_of_tags, tags))
+            photos.append((id, num_common_tags))
+        if photos:
+            min_photo = min(photos, key=lambda item: item[1])
+            for photo in vertical_photos:
+                if photo[0] == min_photo[0]:
+                    vertical_photos.remove(photo)
+            result.append((random_photo[0], min_photo[0]))
+
+    return result
+
+
+# def sort_photos_by_balance(photos):
+#     # result format: (id, sorted_photos_by_common_num)
+#     result = []
+#     for photo in photos:
+#         sorted_photos = []
+#         for id, orientation, num_of_tags, tags in photos:
+#             num_intersect_tags = get_num_intersect_tags(photo, (id, orientation, num_of_tags, tags))
+#             num_diff_first_tags = get_num_dif_first_tags(photo, (id, orientation, num_of_tags, tags))
+#             num_diff_second_tags = get_num_dif_second_tags(photo, (id, orientation, num_of_tags, tags))
+#             sorted_photos.append((id, num_common_tags))
+#         sorted_photos.sort(key=lambda item: item[1])
+#         sorted_photos = [id for id, common_num in sorted_photos]
+#         result.append((photo[0], sorted_photos))
+#
+#     return result
+
+
 if __name__ == '__main__':
-    dataset = parse_txt('a_example.txt', line_manipulation)
-    # dataset = parse_txt('c_memorable_moments.txt', line_manipulation)
+    # dataset = parse_txt('a_example.txt', line_manipulation)
+    dataset = parse_txt('c_memorable_moments.txt', line_manipulation)
     verticals_photos = get_verticals(dataset)
-    sort_photos_by_common_num(verticals_photos)
+    create_random_combined_photos(verticals_photos)
+
     x = 0
