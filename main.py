@@ -169,6 +169,7 @@ def create_random_slideshow(list_of_slides):
                     list_of_slides.remove(slide)
                     result.append(random_slide[0])
                     random_slide = slide
+    result.append(random_slide)
     return result, slide_show_score
 
 
