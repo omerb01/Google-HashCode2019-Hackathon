@@ -17,6 +17,7 @@ def get_couple_slides_score(slide1, slide2):
 
 def create_random_slideshow(list_of_slides):
     result = []
+    slide_show_score = 0
     random_slide = random.choice(list_of_slides)
     list_of_slides.remove(random_slide)
     while list_of_slides:
@@ -26,12 +27,20 @@ def create_random_slideshow(list_of_slides):
             partner_slides.append((partner_slide, partner_slide_score))
 
         if partner_slides:
-            for i = 5
             best_slide = max(partner_slides, key=lambda item: item[1])
             for slide in list_of_slides:
                 if slide == best_slide[0]:
+                    slide_show_score += best_slide[1]
                     list_of_slides.remove(slide)
-                    result.append()
-            result.append((random_slide[0], min_photo[0]))
+                    result.append(random_slide[0])
+                    random_slide = slide
+    return result, slide_show_score
 
-    return result
+def get_best_slideshow(list_of_slides):
+    num_of_slides = len(list_of_slides)
+    result = []
+    for i in range(num_of_slides):
+        result.append(create_random_slideshow(list_of_slides))
+    best_slide_shows = max(result, key=lambda item: item[1])
+    return best_slide_shows[0]
+
