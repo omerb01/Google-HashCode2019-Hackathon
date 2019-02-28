@@ -40,7 +40,8 @@ def get_best_slideshow(list_of_slides):
     num_of_slides = len(list_of_slides)
     result = []
     for i in range(num_of_slides):
-        result.append(create_random_slideshow(list_of_slides))
+        list_copy = [elem for elem in list_of_slides]
+        result.append(create_random_slideshow(list_copy))
     best_slide_shows = max(result, key=lambda item: item[1])
     return best_slide_shows[0]
 
