@@ -121,17 +121,17 @@ def create_slides_dataset(dataset):
     return final_result
 
 
-def print_submission_file(submission_list):
-    with open('submission.txt', 'w+') as file:
-        file.write(len(submission_list))
+def print_submission_file(submission_list, name):
+    with open(name, 'w+') as file:
+        file.write(str(len(submission_list))+'\n')
         for result in submission_list:
             try:
                 photo_id1 = result[0]
                 photo_id2 = result[1]
-                file.write(f'{photo_id1} {photo_id2}')
+                file.write(f'{photo_id1} {photo_id2}\n')
             except IndexError:
                 photo_id = result[0]
-                file.write(f'{photo_id}')
+                file.write(f'{photo_id}\n')
 
 
 def get_num_intersect_tags_of_slides(slide1, slide2):
@@ -163,20 +163,21 @@ def create_random_slideshow(list_of_slides):
 
         if partner_slides:
             best_slide = max(partner_slides, key=lambda item: item[1])
-            for slide in list_of_slides:
+            list_of_slides_copy = [elem for elem in list_of_slides]
+            for slide in list_of_slides_copy:
                 if slide == best_slide[0]:
                     slide_show_score += best_slide[1]
                     list_of_slides.remove(slide)
                     result.append(random_slide[0])
                     random_slide = slide
-    result.append(random_slide)
+    result.append(random_slide[0])
     return result, slide_show_score
 
 
 def get_best_slideshow(list_of_slides):
     num_of_slides = len(list_of_slides)
     result = []
-    for i in range(10):
+    for i in range(num_of_slides):
         list_copy = [elem for elem in list_of_slides]
         result.append(create_random_slideshow(list_copy))
     best_slide_shows = max(result, key=lambda item: item[1])
@@ -185,8 +186,9 @@ def get_best_slideshow(list_of_slides):
 
 
 if __name__ == '__main__':
-    dataset = parse_txt('a_example.txt', line_manipulation)
-    #dataset = parse_txt('c_memorable_moments.txt', line_manipulation)
+    #dataset = parse_txt('a_example.txt', line_manipulation)
+    dataset = parse_txt('c_memorable_moments.txt', line_manipulation)
     slides = create_slides_dataset(dataset)
-    get_best_slideshow(slides)
-    x = 0
+    results = get_best_slideshow(slides)
+    print_submission_file(results, 'C.txt')
+    x=0
